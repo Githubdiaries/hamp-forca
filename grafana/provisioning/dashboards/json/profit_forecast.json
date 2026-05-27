@@ -1,0 +1,145 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "showPoints": "auto"
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "forecast_profit" },
+            "properties": [
+              { "id": "custom.lineStyle", "value": { "dash": [10, 10], "fill": "dash" } },
+              { "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "tooltip": { "mode": "multi" }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "rawSql": "SELECT period AS time, profit AS actual_profit FROM company_monthly ORDER BY period",
+          "refId": "A"
+        },
+        {
+          "format": "time_series",
+          "rawSql": "SELECT target_month AS time, point_estimate AS forecast_profit FROM forecasts WHERE metric = 'profit' AND generated_at = (SELECT MAX(generated_at) FROM forecasts WHERE metric = 'profit') ORDER BY target_month",
+          "refId": "B"
+        }
+      ],
+      "title": "Profit: Actual vs Forecast",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
+      "id": 2,
+      "options": {
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SELECT target_month, metric, point_estimate, generated_at FROM forecasts WHERE generated_at = (SELECT MAX(generated_at) FROM forecasts) ORDER BY target_month, metric",
+          "refId": "A"
+        }
+      ],
+      "title": "Latest Forecast Table",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
+      "id": 3,
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "rawSql": "SELECT period AS time, doc_count FROM market_features_monthly ORDER BY period",
+          "refId": "A"
+        }
+      ],
+      "title": "Market Documents per Month",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 18 },
+      "id": 4,
+      "targets": [
+        {
+          "format": "time_series",
+          "rawSql": "SELECT period AS time, revenue AS actual_revenue FROM company_monthly ORDER BY period",
+          "refId": "A"
+        },
+        {
+          "format": "time_series",
+          "rawSql": "SELECT target_month AS time, point_estimate AS forecast_revenue FROM forecasts WHERE metric = 'revenue' AND generated_at = (SELECT MAX(generated_at) FROM forecasts WHERE metric = 'revenue') ORDER BY target_month",
+          "refId": "B"
+        }
+      ],
+      "title": "Revenue: Actual vs Forecast",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["hamper", "forecast", "lstm"],
+  "templating": { "list": [] },
+  "time": { "from": "now-2y", "to": "now+6M" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Hamper Profit Forecast",
+  "uid": "hamper-profit-forecast",
+  "version": 1
+}

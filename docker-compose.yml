@@ -1,0 +1,83 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-hamper}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hamper_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-hamper_forecast}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hamper} -d ${POSTGRES_DB:-hamper_forecast}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5433:5432"
+
+  test:
+    build: .
+    profiles: ["test"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://hamper:hamper_secret@postgres:5432/hamper_forecast_test
+      TEST_DATABASE_URL: postgresql://hamper:hamper_secret@postgres:5432/hamper_forecast_test
+      FIRECRAWL_API_KEY: test-key
+      MODEL_DIR: /models
+      TRAIN_EPOCHS: "2"
+      MIN_TRAINING_ROWS: "18"
+      LSTM_WINDOW: "12"
+      FORECAST_HORIZON: "6"
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data:ro
+      - ./tests:/app/tests:ro
+      - testmodels:/models
+    command: >
+      sh -c "pip install -q -r requirements-dev.txt &&
+             pytest tests/ -v --tb=short"
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_UID: hamper-profit-forecast
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+
+  app:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://hamper:hamper_secret@postgres:5432/hamper_forecast}
+      FIRECRAWL_API_KEY: ${FIRECRAWL_API_KEY}
+      MODEL_DIR: ${MODEL_DIR:-/models}
+      FORECAST_HORIZON: ${FORECAST_HORIZON:-6}
+      LSTM_WINDOW: ${LSTM_WINDOW:-12}
+      TRAIN_EPOCHS: ${TRAIN_EPOCHS:-80}
+      MIN_TRAINING_ROWS: ${MIN_TRAINING_ROWS:-18}
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data:ro
+      - modelstore:/models
+    ports:
+      - "8001:8000"
+
+volumes:
+  pgdata:
+  grafanadata:
+  modelstore:
+  testmodels:

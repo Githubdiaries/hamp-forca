@@ -1,0 +1,25 @@
+period,sales_volume,revenue,profit,currency,notes
+2023-01-01,420,12600,3200,GBP,Post-holiday slowdown
+2023-02-01,380,11400,2800,GBP,Valentine hampers
+2023-03-01,410,12300,3000,GBP,Easter prep
+2023-04-01,450,13500,3400,GBP,Easter peak
+2023-05-01,390,11700,2900,GBP,Mother's Day
+2023-06-01,360,10800,2600,GBP,Summer lull
+2023-07-01,340,10200,2400,GBP,Summer lull
+2023-08-01,355,10650,2500,GBP,Back to school corporate
+2023-09-01,400,12000,2900,GBP,Corporate Q3 gifting
+2023-10-01,430,12900,3100,GBP,Early Christmas planning
+2023-11-01,520,15600,4100,GBP,Black Friday hampers
+2023-12-01,780,23400,6800,GBP,Christmas peak
+2024-01-01,440,13200,3300,GBP,January clearance
+2024-02-01,395,11850,2950,GBP,Valentine hampers
+2024-03-01,425,12750,3150,GBP,Easter prep
+2024-04-01,470,14100,3550,GBP,Easter peak
+2024-05-01,405,12150,3000,GBP,Mother's Day
+2024-06-01,370,11100,2700,GBP,Summer lull
+2024-07-01,350,10500,2500,GBP,Summer lull
+2024-08-01,365,10950,2600,GBP,Corporate gifting
+2024-09-01,415,12450,3050,GBP,Corporate Q3 gifting
+2024-10-01,445,13350,3250,GBP,Christmas planning
+2024-11-01,540,16200,4300,GBP,Black Friday hampers
+2024-12-01,810,24300,7100,GBP,Christmas peak

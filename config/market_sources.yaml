@@ -1,0 +1,30 @@
+keywords:
+  - gift
+  - hamper
+  - luxury
+  - discount
+  - christmas
+  - easter
+  - corporate gifting
+
+search_queries:
+  - query: "christmas gift hamper market trends 2025"
+    tag: christmas_retail
+    limit: 5
+  - query: "luxury gift hamper sales forecast UK"
+    tag: luxury_hampers
+    limit: 5
+  - query: "corporate gift hamper seasonal demand"
+    tag: corporate_gifting
+    limit: 5
+
+seed_urls:
+  - url: "https://www.hampers.co.uk/"
+    tag: competitor_hampers
+  - url: "https://www.fortnumandmason.com/food-and-drink/hampers"
+    tag: competitor_fortnum
+
+scrape_options:
+  formats:
+    - markdown
+  onlyMainContent: true
