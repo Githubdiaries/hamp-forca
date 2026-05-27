@@ -357,6 +357,14 @@ There was no test suite initially, so `pytest` reported **collected 0 items**. T
 | `integration` | PostgreSQL on port **5433** | API ingest, jobs, market features |
 | `ml` | PostgreSQL + TensorFlow | Full CSV → train → LSTM forecast pipeline |
 
+### Proof of work
+<img width="692" height="273" alt="Screenshot 2026-05-27 055816" src="https://github.com/user-attachments/assets/1b1d741e-f58d-4964-b37f-66b8c8114111" />
+<br>
+<img width="507" height="212" alt="Screenshot 2026-05-27 060034" src="https://github.com/user-attachments/assets/82611fd5-65e8-483a-880c-ceb1937fbacf" />
+<br>
+<img width="691" height="305" alt="Screenshot 2026-05-27 060011" src="https://github.com/user-attachments/assets/a2ab1a75-212a-4426-98f5-c212cf886d82" />
+<br>
+
 ### Run all tests (recommended — uses Docker)
 
 ```bash
